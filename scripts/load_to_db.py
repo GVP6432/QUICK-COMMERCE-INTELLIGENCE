@@ -10,15 +10,15 @@ db_host = os.getenv("DB_HOST", "localhost")
 db_password = os.getenv("DB_PASSWORD")
 db_name = os.getenv("DB_NAME", "quick_commerce_db")
 
-with open("data/blinkit_full_run.json") as f:
+with open("data/normalized_combined.json") as f:
     data = json.load(f)
 
 df = pd.DataFrame(data)
 print(f"Raw records: {len(df)}")
 
-df = df.drop_duplicates(subset=["name", "size", "pincode", "searched_category"])
+df = df.drop_duplicates(subset=["name", "size", "pincode", "searched_category", "platform"])
 print(f"After removing duplicates: {len(df)}")
 
 engine = create_engine(f"postgresql+psycopg2://postgres:{db_password}@{db_host}:5432/{db_name}")
-df.to_sql("stg_quick_commerce_prices", engine, if_exists="append", index=False)
+df.to_sql("stg_quick_commerce_prices", engine, if_exists="replace", index=False)
 print("Loaded into stg_quick_commerce_prices successfully.")
