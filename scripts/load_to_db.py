@@ -9,8 +9,9 @@ load_dotenv()
 db_host = os.getenv("DB_HOST", "localhost")
 db_password = os.getenv("DB_PASSWORD")
 db_name = os.getenv("DB_NAME", "quick_commerce_db")
+data_path = os.getenv("DATA_PATH", "data/normalized_combined.json")
 
-with open("data/normalized_combined.json") as f:
+with open(data_path) as f:
     data = json.load(f)
 
 df = pd.DataFrame(data)
